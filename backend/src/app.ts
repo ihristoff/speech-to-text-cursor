@@ -18,7 +18,13 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware for JSON parsing
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://speech-to-text-cursor.vercel.app/', // <-- replace with your actual Vercel URL
+    'http://localhost:3000'               // <-- for local development
+  ],
+  credentials: true
+}));
 
 console.log(process.env.MONGO_URI)
 
