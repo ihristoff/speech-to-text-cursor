@@ -1,0 +1,132 @@
+# Cursor Rules for Audio Transcription and Summarization App
+
+## Code Formatting
+- Use Prettier for code formatting. Run `npm run format` before committing to ensure consistent code style.
+
+## Linting
+- Use ESLint for JavaScript/TypeScript linting. Run `npm run lint` before committing to catch potential errors and enforce coding standards.
+
+## Type Checking
+- Use TypeScript for static type checking. Ensure there are no TypeScript errors before committing by running `npm run type-check`.
+
+## Testing
+- Write unit tests using Jest. Aim for at least 80% test coverage.
+- Run `npm run test` before committing to ensure all tests pass.
+
+## Commit Messages
+- Follow conventional commits for better changelog generation and clarity.
+- Use the following format: `<type>: <description>`
+  - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+- Example: `feat: add file upload functionality`
+
+## Branching
+- Use feature branches for new features or bug fixes (e.g., `feature/file-upload`).
+- Create pull requests for code reviews before merging into the `main` branch.
+- Ensure all pull requests are reviewed and approved by at least one team member.
+
+## Code Reviews
+- Conduct code reviews for all pull requests to maintain code quality.
+- Focus on functionality, readability, and adherence to project guidelines.
+
+## Documentation
+- Keep documentation up to date, including the `README.md` and any relevant inline code comments.
+- Document all API endpoints, their expected inputs, and outputs.
+
+## Error Handling
+- Implement proper error handling in both frontend and backend.
+- Provide meaningful error messages to users when something goes wrong.
+
+## Security
+- Use HTTPS for all communications.
+- Store sensitive information (e.g., API keys) in environment variables, not in the codebase.
+- Ensure that temporary files are deleted after processing to maintain privacy.
+
+
+
+
+
+
+
+
+
+# Audio Transcription and Summarization App
+
+## Introduction
+This app enables users to upload audio files (MP3 and MP4), transcribe the conversation using OpenAI's Whisper model, and generate a deep summary using a GPT model. The app provides a simple web interface for uploading files and viewing both the full transcript and the summary.
+
+## Features
+- **File Upload**: Supports MP3 and MP4 audio files.
+- **Audio Extraction**: Extracts audio from MP4 files using FFmpeg.
+- **Transcription**: Generates a full transcript with timestamps using OpenAI's Whisper API.
+- **Summarization**: Produces a detailed summary (200-300 words) using OpenAI's GPT API.
+- **User Interface**: A straightforward web interface for file uploads and result viewing.
+- **Background Processing**: Uses a job queue to handle long audio files efficiently, providing users with a status link.
+- **Output Delivery**: Displays the transcript and summary on the web page with options to download them as text files.
+
+## Technical Stack
+- **Frontend**: React
+- **Backend**: Node.js with Express
+- **Database**: MongoDB (for job status and results)
+- **Job Queue**: Bull with Redis (for background processing)
+- **Audio Processing**: FFmpeg (for extracting audio from MP4 files)
+- **Transcription**: OpenAI's Whisper API
+- **Summarization**: OpenAI's GPT API
+
+## Development Steps
+1. **Set Up Environment**:
+   - Install Node.js, React, Redis, and MongoDB.
+   - Create the project structure with separate directories for frontend and backend.
+   - Initialize Git and set up the repository.
+
+2. **Design UI**:
+   - Create wireframes for the upload form and status/results page.
+   - Implement the UI using React components (e.g., upload form, progress indicator, results display).
+
+3. **Build Backend**:
+   - Set up an Express server to handle requests.
+   - Implement file upload handling using Multer for temporary storage.
+   - Set up a job queue using Bull and Redis to manage background tasks.
+   - Integrate MongoDB to store job status, transcripts, and summaries.
+
+4. **Integrate APIs**:
+   - Securely manage OpenAI API keys using environment variables.
+   - Implement transcription by sending audio files to the Whisper API.
+   - Implement summarization by sending transcripts to the GPT API with a summarization prompt.
+
+5. **Process Audio**:
+   - Use FFmpeg to extract audio from MP4 files (e.g., `ffmpeg -i input.mp4 -vn -acodec mp3 output.mp3`).
+   - For large audio files, split them into smaller chunks if they exceed API limits, transcribe each chunk, and merge the results.
+
+6. **Implement Background Processing**:
+   - Create worker processes to handle jobs from the queue (e.g., audio processing, transcription, summarization).
+   - Update the job status in MongoDB as each step completes (e.g., "processing", "completed", "failed").
+
+7. **Handle User Flow**:
+   - Upon file upload, generate a unique `job_id` and provide a status link (e.g., `/results/job_id`).
+   - Allow users to check the status and view results once processing is complete.
+
+8. **Test**:
+   - Write unit tests for individual components (e.g., file upload, API integrations).
+   - Perform integration tests to ensure the entire workflow functions correctly.
+   - Test with various audio files (different formats, sizes, and qualities) to verify accuracy and performance.
+
+9. **Deploy**:
+   - Choose a hosting platform (e.g., AWS, Heroku) for both frontend and backend.
+   - Set up CI/CD pipelines for automated testing and deployment.
+   - Monitor application performance, logs, and errors post-deployment.
+
+## Testing
+- **Unit Tests**: Test individual functions and components using Jest (e.g., file upload, API calls).
+- **Integration Tests**: Verify the complete workflow from upload to result display.
+- **Manual Testing**: Test with real audio files to ensure transcription and summarization accuracy.
+
+## Deployment
+- Host the frontend and backend on a cloud platform with sufficient resources.
+- Use environment variables for sensitive data (e.g., API keys, database credentials).
+- Implement logging and monitoring to track application health and user activity.
+
+## Additional Considerations
+- **Large File Handling**: Implement chunking for audio files exceeding API limits.
+- **Error Handling**: Provide clear error messages for issues like invalid file formats or API failures.
+- **Security**: Use HTTPS, secure API keys, and delete temporary files after processing.
+- **Cost Management**: Monitor API usage to manage costs, especially for long audio files.
